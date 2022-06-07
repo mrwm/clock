@@ -69,6 +69,7 @@ __pycache__/
 doc/_build/
 
 # Android
+android/
 .gradle/
 local.properties
 *.iml
