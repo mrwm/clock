@@ -3,29 +3,44 @@ extends Control
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var time = OS.get_time();
+var timeValue = null;
 var oldMinute = -1;
-var timeText = 0;
+var requ = null;
+var showSeconds = false;
 
+onready var timeText = $"VBoxContainer/RichTextLabel";
+onready var ckbx = $"VBoxContainer/CheckButton";
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-  print(time)
-  print(time.hour)
-  print(Engine.time_scale)
-  $"AspectRatioContainer/VBoxContainer/RichTextLabel".set_text(str(time));
+  #print(Engine.time_scale)
+  timeText.set_text(str(timeValue));
   pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-  time = OS.get_time();
-  if (time.minute > oldMinute):
-    $"AspectRatioContainer/VBoxContainer/RichTextLabel".set_text(str(time));
-  oldMinute = time.minute;
+  timeValue = OS.get_time();
+
+  if (showSeconds):
+    timeText.set_text(str(timeValue));
+  else:
+    if (timeValue.minute > oldMinute):
+      timeText.set_text(str(timeValue));
+  oldMinute = timeValue.minute;
   pass
 
-func _updateTime():
-  $"AspectRatioContainer/VBoxContainer/RichTextLabel".set_text(str(time));
+func updateTime():
+  timeText.set_text(str(timeValue));
   pass
 
+func _on_Button_pressed():
+  updateTime()
+  pass # Replace with function body.
+
+
+
+
+func _on_CheckButton_toggled(button_pressed):
+  showSeconds = button_pressed;
+  pass # Replace with function body.

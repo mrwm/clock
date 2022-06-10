@@ -21,7 +21,16 @@ run/description=""
 window/size/width=540
 window/size/height=1170
 window/dpi/allow_hidpi=true
+window/per_pixel_transparency/allowed=true
+window/per_pixel_transparency/enabled=true
 window/handheld/orientation="portrait"
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
+[gui]
+
+theme/use_hidpi=true
+theme/custom_font="res://Bangers_font.tres"
 
 [physics]
 
