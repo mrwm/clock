@@ -15,28 +15,38 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="Interface"]
 margin_right = 540.0
 margin_bottom = 1170.0
-alignment = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Interface/VBoxContainer"]
-margin_top = 505.0
+[node name="Padding" type="Control" parent="Interface/VBoxContainer"]
 margin_right = 540.0
-margin_bottom = 532.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 200 )
+
+[node name="TimeLabel" type="RichTextLabel" parent="Interface/VBoxContainer"]
+margin_top = 208.0
+margin_right = 540.0
+margin_bottom = 245.0
 focus_mode = 2
-text = "text"
+text = "Loading"
 fit_content_height = true
 selection_enabled = true
 
-[node name="Button" type="Button" parent="Interface/VBoxContainer"]
-margin_top = 540.0
+[node name="Padding2" type="Control" parent="Interface/VBoxContainer"]
+margin_top = 253.0
 margin_right = 540.0
-margin_bottom = 577.0
-text = "Press me to update seconds"
+margin_bottom = 453.0
+rect_min_size = Vector2( 0, 200 )
 
 [node name="CheckButton" type="CheckButton" parent="Interface/VBoxContainer"]
-margin_top = 585.0
+margin_top = 461.0
 margin_right = 540.0
-margin_bottom = 665.0
+margin_bottom = 541.0
 text = "show seconds"
 
-[connection signal="pressed" from="Interface/VBoxContainer/Button" to="Interface" method="_on_Button_pressed"]
+[node name="CheckButton2" type="CheckButton" parent="Interface/VBoxContainer"]
+margin_top = 549.0
+margin_right = 540.0
+margin_bottom = 629.0
+text = "Use 24HR Clock"
+
 [connection signal="toggled" from="Interface/VBoxContainer/CheckButton" to="Interface" method="_on_CheckButton_toggled"]
+[connection signal="toggled" from="Interface/VBoxContainer/CheckButton2" to="Interface" method="_on_CheckButton2_toggled"]
