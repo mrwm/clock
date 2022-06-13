@@ -19,6 +19,7 @@ run/description=""
 [autoload]
 
 Variables="*res://Variables.gd"
+System="*res://System.gd"
 
 [display]
 

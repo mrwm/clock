@@ -14,6 +14,12 @@ anchor_bottom = 1.0
 rect_pivot_offset = Vector2( -2255, -1241 )
 alignment = 2
 
+[node name="Button" type="Button" parent="VBoxContainer"]
+margin_top = 746.0
+margin_right = 1080.0
+margin_bottom = 847.0
+text = "settings"
+
 [node name="SecondToggle" type="CheckButton" parent="VBoxContainer"]
 margin_top = 855.0
 margin_right = 1080.0
