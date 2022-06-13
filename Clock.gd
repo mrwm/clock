@@ -2,21 +2,25 @@ extends Control
 
 # Variables
 var timeValue = null;
-var showSeconds = false;
-var use24hour = false;
 
 onready var ampm = $"VBoxContainer/CenterContainer/TimeSplit/ampm";
 onready var hour = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
 onready var minute = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
 onready var second = $"VBoxContainer/CenterContainer/TimeSplit/Second";
-onready var touchpos = $"VBoxContainer/touchpos";
+#onready var touchpos = $"VBoxContainer/touchpos";
+var touchpos = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+  var Menu : PackedScene = load("res://Menu.tscn")
+  var menu = Menu.instance()
+  add_child(menu)
+  touchpos = menu.get_node("VBoxContainer/touchpos")
+
   #print(Engine.time_scale) #How fast we want the program to run
   ampm.set_text("")
   second.set_text("")
-  touchpos.set_text("") # leave empty for padding bottom of screen
+  #touchpos.set_text("") # leave empty for padding bottom of screen
   pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -33,7 +37,7 @@ func _process(_delta):
   if (currentHour > 12):
     isAM = false;
     # Toggle between 24 and 12 hour clocks
-    if (!use24hour):
+    if (!Variables.use24hour):
       currentHour = currentHour - 12;
       ampm.visible = true;
 
@@ -43,10 +47,10 @@ func _process(_delta):
   if currentSecond < 10:
     currentSecond = str("0") + str(currentSecond)
 
-  if (showSeconds):
+  if (Variables.showSeconds):
     second.visible = true;
     second.set_text(": " + str(currentSecond))
-  if (!use24hour):
+  if (!Variables.use24hour):
     if (isAM):
       ampm.set_text("a.m.")
     else:
@@ -58,6 +62,9 @@ func _process(_delta):
   minute.set_text(": " + str(currentMinute));
   pass
 
+################
+# Touch events #
+################
 # Figure out the swipe direction
 var initialPoint = Vector2(0,0);
 var secondPoint = Vector2(0,0);
@@ -100,11 +107,3 @@ func calculateDirection(firstPt, secondPt):
     else:
       #touchpos.set_text("no change in y: " + str(deviation.y))
       pass
-
-func _on_CheckButton_toggled(button_pressed):
-  showSeconds = button_pressed;
-  pass
-
-func _on_CheckButton2_toggled(button_pressed):
-  use24hour = button_pressed;
-  pass

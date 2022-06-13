@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Interface.gd" type="Script" id=1]
+[ext_resource path="res://Clock.gd" type="Script" id=1]
 
 [node name="Main" type="Node"]
 
@@ -19,15 +19,15 @@ alignment = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="Clock/VBoxContainer"]
 margin_right = 1080.0
-margin_bottom = 2017.0
+margin_bottom = 2340.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="TimeSplit" type="HBoxContainer" parent="Clock/VBoxContainer/CenterContainer"]
 margin_left = 367.0
-margin_top = 964.0
+margin_top = 1125.0
 margin_right = 713.0
-margin_bottom = 1053.0
+margin_bottom = 1214.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -69,24 +69,3 @@ size_flags_vertical = 7
 text = "..."
 align = 1
 valign = 1
-
-[node name="SecondToggle" type="CheckButton" parent="Clock/VBoxContainer"]
-margin_top = 2025.0
-margin_right = 1080.0
-margin_bottom = 2130.0
-text = "show seconds"
-
-[node name="Use24Toggle" type="CheckButton" parent="Clock/VBoxContainer"]
-margin_top = 2138.0
-margin_right = 1080.0
-margin_bottom = 2243.0
-text = "use 24HR clock"
-
-[node name="touchpos" type="Label" parent="Clock/VBoxContainer"]
-margin_top = 2251.0
-margin_right = 1080.0
-margin_bottom = 2340.0
-text = "..."
-
-[connection signal="toggled" from="Clock/VBoxContainer/SecondToggle" to="Clock" method="_on_CheckButton_toggled"]
-[connection signal="toggled" from="Clock/VBoxContainer/Use24Toggle" to="Clock" method="_on_CheckButton2_toggled"]

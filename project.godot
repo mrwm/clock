@@ -16,6 +16,10 @@ run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 run/description=""
 
+[autoload]
+
+Variables="*res://Variables.gd"
+
 [display]
 
 window/size/width=1080
