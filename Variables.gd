@@ -7,6 +7,7 @@ extends Node
 
 var showSeconds = false;
 var use24hour = false;
+var showSettings = false;
 
-const SCENES = [ "clock", "timer", "stopwatch", "alarm" ]
-var currentScene = SCENES[0]
+enum CurrentSceneIs { CLOCK, TIMER, STOPWATCH, ALARM }
+var currentScene = null

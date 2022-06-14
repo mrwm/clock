@@ -7,11 +7,11 @@ onready var ampm = $"VBoxContainer/CenterContainer/TimeSplit/ampm";
 onready var hour = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
 onready var minute = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
 onready var second = $"VBoxContainer/CenterContainer/TimeSplit/Second";
-#onready var touchpos = $"VBoxContainer/touchpos";
 var touchpos = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+  Variables.currentScene = Variables.CurrentSceneIs.CLOCK
   var Menu : PackedScene = load("res://Menu.tscn")
   var menu = Menu.instance()
   add_child(menu)
@@ -20,7 +20,6 @@ func _ready():
   #print(Engine.time_scale) #How fast we want the program to run
   ampm.set_text("")
   second.set_text("")
-  #touchpos.set_text("") # leave empty for padding bottom of screen
   pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -36,10 +35,10 @@ func _process(_delta):
 
   if (currentHour > 12):
     isAM = false;
-    # Toggle between 24 and 12 hour clocks
-    if (!Variables.use24hour):
-      currentHour = currentHour - 12;
-      ampm.visible = true;
+  # Toggle between 24 and 12 hour clocks
+  if (!Variables.use24hour):
+    currentHour = currentHour - 12;
+    ampm.visible = true;
 
   # Pad numbers less than 10 with a leading zero
   if currentMinute < 10:
@@ -53,8 +52,10 @@ func _process(_delta):
   if (!Variables.use24hour):
     if (isAM):
       ampm.set_text("a.m.")
+      ampm.visible = true;
     else:
       ampm.set_text("p.m.")
+      ampm.visible = true;
   else:
     pass
 

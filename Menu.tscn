@@ -14,28 +14,40 @@ anchor_bottom = 1.0
 rect_pivot_offset = Vector2( -2255, -1241 )
 alignment = 2
 
-[node name="Button" type="Button" parent="VBoxContainer"]
-margin_top = 746.0
+[node name="SettingsBtn" type="Button" parent="VBoxContainer"]
+margin_top = 649.0
+margin_right = 1080.0
+margin_bottom = 750.0
+toggle_mode = true
+text = "settings"
+flat = true
+align = 0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_top = 758.0
 margin_right = 1080.0
 margin_bottom = 847.0
-text = "settings"
+size_flags_horizontal = 3
 
 [node name="SecondToggle" type="CheckButton" parent="VBoxContainer"]
 margin_top = 855.0
 margin_right = 1080.0
 margin_bottom = 960.0
+size_flags_horizontal = 3
 text = "show seconds"
 
 [node name="Use24Toggle" type="CheckButton" parent="VBoxContainer"]
 margin_top = 968.0
 margin_right = 1080.0
 margin_bottom = 1073.0
+size_flags_horizontal = 3
 text = "use 24HR clock"
 
 [node name="touchpos" type="Label" parent="VBoxContainer"]
 margin_top = 1081.0
 margin_right = 1080.0
 margin_bottom = 1170.0
+size_flags_horizontal = 3
 text = "..."
 
 [connection signal="toggled" from="VBoxContainer/SecondToggle" to="." method="_on_SecondToggle_toggled"]

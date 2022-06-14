@@ -36,9 +36,12 @@ func calculateDirection(firstPt, secondPt):
   else:
     # Check direction of Y
     if (firstPt.y > secondPt.y) and (deviation.y > vectorDeviation.y):
+      # TODO: Show menu on swipe up
+      Variables.showSettings = true
       #print("initial larger y U " + str(deviation.y))
       pass
     elif (firstPt.y < secondPt.y) and (deviation.y > vectorDeviation.y):
+      Variables.showSettings = false
       #print("initial smaller y D " + str(deviation.y))
       pass
     else:
