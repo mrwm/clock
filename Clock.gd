@@ -7,7 +7,6 @@ onready var ampm = $"VBoxContainer/CenterContainer/TimeSplit/ampm";
 onready var hour = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
 onready var minute = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
 onready var second = $"VBoxContainer/CenterContainer/TimeSplit/Second";
-var touchpos = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,7 +14,6 @@ func _ready():
   var Menu : PackedScene = load("res://Menu.tscn")
   var menu = Menu.instance()
   add_child(menu)
-  touchpos = menu.get_node("VBoxContainer/touchpos")
 
   #print(Engine.time_scale) #How fast we want the program to run
   ampm.set_text("")
@@ -35,10 +33,10 @@ func _process(_delta):
 
   if (currentHour > 12):
     isAM = false;
-  # Toggle between 24 and 12 hour clocks
-  if (!Variables.use24hour):
-    currentHour = currentHour - 12;
-    ampm.visible = true;
+    # Toggle between 24 and 12 hour clocks
+    if (!Variables.use24hour):
+      currentHour = currentHour - 12;
+      ampm.visible = true;
 
   # Pad numbers less than 10 with a leading zero
   if currentMinute < 10:

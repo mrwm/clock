@@ -4,7 +4,6 @@ extends Control
 onready var settingsBtn = $"VBoxContainer/SettingsBtn";
 onready var secondToggle = $"VBoxContainer/SecondToggle";
 onready var use24Toggle = $"VBoxContainer/Use24Toggle";
-onready var touchpos = $"VBoxContainer/touchpos";
 
 var menuPostion = null
 var menuSize = null
@@ -13,7 +12,6 @@ var menuHide = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
   menuPostion = self.rect_position;
-  touchpos.set_text(""); # leave empty for padding bottom of screen
   use24Toggle.connect("toggled", self,"_on_User24Toggle_toggled");
   settingsBtn.connect("toggled", self,"_on_SettingsBtn_toggled");
 
@@ -28,8 +26,10 @@ func _ready():
 
 # TODO:
 #
-# - Make the settings button slide up & reveal more info when pressed
-# - Make the menu slide up when a slide-up gesture is detected
+# -[x] Make the settings button slide up & reveal more info when pressed
+# -[x] Make the menu slide up when a slide-up gesture is detected
+# -[ ] Make the menu entries via code, instead of manual
+# -[ ] Load different parts of the menu depending on the current scene
 #
 
 var t1 = 0.0

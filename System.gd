@@ -8,12 +8,11 @@ extends Node
 # Figure out the swipe direction
 var initialPoint = Vector2(0,0);
 var secondPoint = Vector2(0,0);
-const vectorDeviation = Vector2(200, 500)
-func _input(event):
-  # The difference allowed for directional swipe
+# The difference allowed for directional swipe
+const vectorSensitivity = Vector2(200, 200)
 
-  if (event is InputEventScreenTouch):
-    if (event.pressed):
+func _input(event):
+  if (event is InputEventScreenTouch) and (event.pressed):
       initialPoint = event.position;
 
   if (event is InputEventScreenTouch) and (!event.pressed):
@@ -27,20 +26,20 @@ func calculateDirection(firstPt, secondPt):
   # Check which vector is dominant (X or Y)
   if (deviation.x > deviation.y):
   # Check direction of X
-    if (firstPt.x > secondPt.x) and (deviation.x > vectorDeviation.x):
+    if (firstPt.x > secondPt.x) and (deviation.x > vectorSensitivity.x):
       #print("initial larger x <-" + str(deviation.x))
       pass
-    elif (firstPt.x < secondPt.x) and (deviation.x > vectorDeviation.x):
+    elif (firstPt.x < secondPt.x) and (deviation.x > vectorSensitivity.x):
       #print("initial smaller x ->" + str(deviation.x))
       pass
   else:
     # Check direction of Y
-    if (firstPt.y > secondPt.y) and (deviation.y > vectorDeviation.y):
+    if (firstPt.y > secondPt.y) and (deviation.y > vectorSensitivity.y):
       # TODO: Show menu on swipe up
       Variables.showSettings = true
       #print("initial larger y U " + str(deviation.y))
       pass
-    elif (firstPt.y < secondPt.y) and (deviation.y > vectorDeviation.y):
+    elif (firstPt.y < secondPt.y) and (deviation.y > vectorSensitivity.y):
       Variables.showSettings = false
       #print("initial smaller y D " + str(deviation.y))
       pass

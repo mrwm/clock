@@ -48,6 +48,5 @@ margin_top = 1081.0
 margin_right = 1080.0
 margin_bottom = 1170.0
 size_flags_horizontal = 3
-text = "..."
 
 [connection signal="toggled" from="VBoxContainer/SecondToggle" to="." method="_on_SecondToggle_toggled"]

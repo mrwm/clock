@@ -11,3 +11,4 @@ var showSettings = false;
 
 enum CurrentSceneIs { CLOCK, TIMER, STOPWATCH, ALARM }
 var currentScene = null
+var defaultScene = CurrentSceneIs.CLOCK
