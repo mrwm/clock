@@ -1,7 +1,7 @@
 extends Control
 
 # Variables
-var timeValue = null;
+var timeValue = 0;
 
 onready var ampm = $"VBoxContainer/CenterContainer/TimeSplit/ampm";
 onready var hour = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
@@ -18,12 +18,16 @@ func _ready():
   pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-  timeValue = OS.get_time();
+func _process(delta):
+  timeValue += delta;
+  var fps = Performance.get_monitor(Performance.TIME_FPS)
+  var milSecDelta = fmod(timeValue, fps);
+
   var isAM = true;
-  var currentHour = timeValue.hour;
-  var currentMinute = timeValue.minute;
-  var currentSecond = timeValue.second;
+  var currentHour = 0;
+  var currentMinute = 0;
+  var currentSecond = 0;
+  var currentMilsec = 0;
 
   ampm.visible = false;
   second.visible = false;
