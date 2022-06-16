@@ -1,9 +1,10 @@
 extends Control
 
 # Declare member variables here. Examples:
-onready var settingsBtn = $"VBoxContainer/SettingsBtn";
-onready var secondToggle = $"VBoxContainer/SecondToggle";
-onready var use24Toggle = $"VBoxContainer/Use24Toggle";
+onready var menuList = $"MenuList"
+var settingsBtn := Button.new()
+var secondToggle := CheckButton.new();
+var use24Toggle := CheckButton.new();
 
 var menuPostion = null
 var menuSize = null
@@ -11,16 +12,48 @@ var menuHide = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-  menuPostion = self.rect_position;
-  use24Toggle.connect("toggled", self,"_on_User24Toggle_toggled");
-  settingsBtn.connect("toggled", self,"_on_SettingsBtn_toggled");
+  # Settings button
+  settingsBtn.name = "SettingsBtn";
+  settingsBtn.text = "settings";
+  settingsBtn.align = Button.ALIGN_LEFT;
+  settingsBtn.flat = true;
+  settingsBtn.toggle_mode = true;
+  settingsBtn.connect("toggled", self, "_on_SettingsBtn_toggled");
+  menuList.add_child(settingsBtn);
 
+  # Padding label
+  var paddingLabel1 := Label.new();
+  paddingLabel1.name = "SettingsPad1";
+  menuList.add_child(paddingLabel1);
+
+  # Second toggle
+  secondToggle.name = "SecondToggle";
+  secondToggle.text = "show seconds";
+  secondToggle.align = Button.ALIGN_LEFT;
+  secondToggle.connect("toggled", self,"_on_SecondToggle_toggled");
+  menuList.add_child(secondToggle);
+
+  # 24 Hour toggle
+  use24Toggle.name = "Use24Toggle";
+  use24Toggle.text = "use 24HR clock";
+  use24Toggle.align = Button.ALIGN_LEFT;
+  use24Toggle.connect("toggled", self,"_on_User24Toggle_toggled");
+  menuList.add_child(use24Toggle);
+
+  # Padding label
+  var paddingLabel2 := Label.new();
+  paddingLabel2.name = "SettingsPad2";
+  menuList.add_child(paddingLabel2);
+
+  # Menu settings
+  menuPostion = self.rect_position;
+  #settingsBtn.connect("toggled", self,"_on_SettingsBtn_toggled");
   # Hide the menu except for the settings button
   menuSize = self.rect_size;
-  for i in $VBoxContainer.get_child_count():
-    menuHide += $VBoxContainer.get_child(i).rect_size.y;
+  for i in $MenuList.get_child_count():
+    menuHide += $MenuList.get_child(i).rect_size.y;
     pass
-  menuHide = menuHide - ($VBoxContainer.get_child(0).rect_size.y + $VBoxContainer.get_child(0).rect_size.y);
+  menuHide = menuHide - ($MenuList.get_child(0).rect_size.y + $MenuList.get_child(0).rect_size.y);
   pass # Replace with function body.
 
 
@@ -28,7 +61,7 @@ func _ready():
 #
 # -[x] Make the settings button slide up & reveal more info when pressed
 # -[x] Make the menu slide up when a slide-up gesture is detected
-# -[ ] Make the menu entries via code, instead of manual
+# -[x] Make the menu entries via code, instead of manual
 # -[ ] Load different parts of the menu depending on the current scene
 #
 

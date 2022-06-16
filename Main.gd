@@ -7,7 +7,7 @@ var ClockScene : PackedScene = load("res://Clock.tscn")
 #var TimerScene : PackedScene = load("res://Timer.tscn")
 #var StopwatchScene : PackedScene = load("res://Stopwatch.tscn")
 
-#
+# only load the screen once
 var isSceneLoaded = false
 
 # Called when the node enters the scene tree for the first time.

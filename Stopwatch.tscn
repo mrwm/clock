@@ -14,15 +14,15 @@ alignment = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
 margin_right = 1080.0
-margin_bottom = 2340.0
+margin_bottom = 2025.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="TimeSplit" type="HBoxContainer" parent="VBoxContainer/CenterContainer"]
 margin_left = 367.0
-margin_top = 1125.0
+margin_top = 968.0
 margin_right = 713.0
-margin_bottom = 1214.0
+margin_bottom = 1057.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -55,7 +55,7 @@ text = "SS"
 align = 1
 valign = 1
 
-[node name="ampm" type="Label" parent="VBoxContainer/CenterContainer/TimeSplit"]
+[node name="milsecLabel" type="Label" parent="VBoxContainer/CenterContainer/TimeSplit"]
 margin_left = 298.0
 margin_right = 346.0
 margin_bottom = 89.0
@@ -64,3 +64,22 @@ size_flags_vertical = 7
 text = "..."
 align = 1
 valign = 1
+
+[node name="ToggleStart" type="Button" parent="VBoxContainer"]
+margin_top = 2033.0
+margin_right = 1080.0
+margin_bottom = 2134.0
+text = "start"
+flat = true
+
+[node name="LapBtn" type="Button" parent="VBoxContainer"]
+margin_top = 2142.0
+margin_right = 1080.0
+margin_bottom = 2243.0
+text = "lap"
+flat = true
+
+[node name="LapBtn2" type="Label" parent="VBoxContainer"]
+margin_top = 2251.0
+margin_right = 1080.0
+margin_bottom = 2340.0

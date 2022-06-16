@@ -1,63 +1,85 @@
 extends Control
 
 # Variables
-var timeValue = 0;
+var isRunning = false;
+var logged = {
+  hour = 0,
+  minute = 0,
+  second = 0,
+  milsec = 0
+  }
 
-onready var ampm = $"VBoxContainer/CenterContainer/TimeSplit/ampm";
-onready var hour = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
-onready var minute = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
-onready var second = $"VBoxContainer/CenterContainer/TimeSplit/Second";
+onready var hourLabel = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
+onready var minuteLabel = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
+onready var secondLabel = $"VBoxContainer/CenterContainer/TimeSplit/Second";
+onready var milsecLabel = $"VBoxContainer/CenterContainer/TimeSplit/milsecLabel";
+
+var timer := Timer.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+  # Countdown timer for counting up
+  timer.autostart = true;
+  timer.wait_time = 1;
+  timer.name = "Timer"
+  timer.connect("timeout", self, "_on_Timeout")
+  add_child(timer)
+
+
   Variables.currentScene = Variables.CurrentSceneIs.STOPWATCH
 
+  hourLabel.rect_min_size = Vector2(120,0);
+  minuteLabel.rect_min_size = Vector2(120,0);
+  secondLabel.rect_min_size = Vector2(120,0);
+  milsecLabel.rect_min_size = Vector2(120,0);
+
   #print(Engine.time_scale) #How fast we want the program to run
-  ampm.set_text("")
-  second.set_text("")
+  #milsecLabel.visible = false;
   pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-  timeValue += delta;
-  var fps = Performance.get_monitor(Performance.TIME_FPS)
-  var milSecDelta = fmod(timeValue, fps);
+func _process(_delta):
+  var systemMs = 1 - timer.time_left
+  systemMs = float(str(systemMs).left(5))*1000
 
-  var isAM = true;
-  var currentHour = 0;
-  var currentMinute = 0;
-  var currentSecond = 0;
-  var currentMilsec = 0;
+  logged.milsec = systemMs
 
-  ampm.visible = false;
-  second.visible = false;
+  # Pad numbers with a leading zero if the number is less than 10
+  # Convert variable to string, then check if it is 2 digits long
+  if len(str(logged.hour)) < 2:
+    logged.hour = str("0") + str(logged.hour);
+  if len(str(logged.minute)) < 2:
+    logged.minute = str("0") + str(logged.minute);
+  if len(str(logged.second)) < 2:
+    logged.second = str("0") + str(logged.second);
+  elif len(str(logged.milsec)) < 3:
+    logged.milsec = str("0") + str(logged.milsec);
 
-  if (currentHour > 12):
-    isAM = false;
-    # Toggle between 24 and 12 hour clocks
-    if (!Variables.use24hour):
-      currentHour = currentHour - 12;
-      ampm.visible = true;
+  # Set the text
+  hourLabel.set_text(str(logged.hour));
+  minuteLabel.set_text(str(logged.minute));
+  secondLabel.set_text(str(logged.second));
+  milsecLabel.set_text(str(logged.milsec));
 
-  # Pad numbers less than 10 with a leading zero
-  if currentMinute < 10:
-    currentMinute = str("0") + str(currentMinute)
-  if currentSecond < 10:
-    currentSecond = str("0") + str(currentSecond)
-
-  if (Variables.showSeconds):
-    second.visible = true;
-    second.set_text(": " + str(currentSecond))
-  if (!Variables.use24hour):
-    if (isAM):
-      ampm.set_text("a.m.")
-      ampm.visible = true;
-    else:
-      ampm.set_text("p.m.")
-      ampm.visible = true;
-  else:
-    pass
-
-  hour.set_text(str(currentHour));
-  minute.set_text(": " + str(currentMinute));
   pass
+
+func update_time(time):
+
+  var updatedTime = time;
+
+  updatedTime.second = int(updatedTime.second) + 1
+
+  if int(updatedTime.second) > 59:
+    updatedTime.minute = int(updatedTime.minute) + 1;
+    updatedTime.second = 0;
+  if int(updatedTime.minute) > 59:
+    updatedTime.hour = int(updatedTime.hour) + 1;
+    updatedTime.minute = 0;
+
+  return updatedTime;
+
+func _on_Timeout():
+  update_time(logged)
+  pass
+
+
