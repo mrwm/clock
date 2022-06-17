@@ -7,6 +7,7 @@ var logged = {
   second = 0,
   milsec = 0
   }
+var lapFlip = Variables.stopwatchFlip
 
 onready var hourLabel = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
 onready var minuteLabel = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
@@ -67,6 +68,7 @@ func _process(_delta):
   secondLabel.set_text(str(logged.second));
   milsecLabel.set_text(str(logged.milsec));
 
+  # Reset button
   if (Variables.stopwatchReset):
     logged = {
       hour = 0,
@@ -81,12 +83,14 @@ func _process(_delta):
     timer.start()
     pass
 
+  # Lap button
+  if (Variables.stopwatchFlip == lapFlip):
+    
+    pass
   pass
 
 func update_time(time):
-
   var updatedTime = time;
-
   updatedTime.second = int(updatedTime.second) + 1
 
   if int(updatedTime.second) > 59:

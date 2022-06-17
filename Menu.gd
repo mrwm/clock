@@ -107,6 +107,7 @@ func _ready():
 # -[x] Make the menu slide up when a slide-up gesture is detected
 # -[x] Make the menu entries via code, instead of manual
 # -[ ] Load different parts of the menu depending on the current scene
+# -[ ] Transfer loading menu from within different scene to the main scene
 #
 
 var t1 = 0.0
@@ -171,6 +172,7 @@ func _on_SecondToggle_toggled(button_pressed):
   #  print("timer")
 
   elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
+    Variables.stopwatchFlip = !Variables.stopwatchFlip
     print("stopwatch")
   pass
 
