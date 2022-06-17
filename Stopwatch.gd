@@ -1,7 +1,6 @@
 extends Control
 
 # Variables
-var isRunning = false;
 var logged = {
   hour = 0,
   minute = 0,
@@ -18,13 +17,12 @@ var timer := Timer.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-  # Countdown timer for counting up
-  timer.autostart = true;
-  timer.wait_time = 1;
-  timer.name = "Timer"
-  timer.connect("timeout", self, "_on_Timeout")
-  add_child(timer)
+  Variables.currentScene = Variables.CurrentSceneIs.STOPWATCH
+  var Menu : PackedScene = load("res://Menu.tscn")
+  var menu = Menu.instance()
+  add_child(menu)
 
+  _prepareTimer()
 
   Variables.currentScene = Variables.CurrentSceneIs.STOPWATCH
 
@@ -33,16 +31,24 @@ func _ready():
   secondLabel.rect_min_size = Vector2(120,0);
   milsecLabel.rect_min_size = Vector2(120,0);
 
-  #print(Engine.time_scale) #How fast we want the program to run
-  #milsecLabel.visible = false;
-  pass
+  Variables.stopwatchRun = false;
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-  var systemMs = 1 - timer.time_left
-  systemMs = float(str(systemMs).left(5))*1000
+  var systemMs = 1
+  if (timer != null):
+    systemMs = systemMs - timer.time_left
+    systemMs = float(str(systemMs).left(5))*1000
 
-  logged.milsec = systemMs
+  logged.milsec = systemMs;
+  timer.paused = !Variables.stopwatchRun;
+#    var deltamin = float(str(delta).left(5))*1000
+#    if (timer.time_left == deltamin):
+#      pass
+#    timer.paused = !Variables.stopwatchRun
+#  else:
+#    timer.paused = !Variables.stopwatchRun
 
   # Pad numbers with a leading zero if the number is less than 10
   # Convert variable to string, then check if it is 2 digits long
@@ -60,6 +66,20 @@ func _process(_delta):
   minuteLabel.set_text(str(logged.minute));
   secondLabel.set_text(str(logged.second));
   milsecLabel.set_text(str(logged.milsec));
+
+  if (Variables.stopwatchReset):
+    logged = {
+      hour = 0,
+      minute = 0,
+      second = 0,
+      milsec = 0
+      }
+    timer.queue_free()
+    _prepareTimer()
+    Variables.stopwatchReset = null;
+  elif (Variables.stopwatchReset != null):
+    timer.start()
+    pass
 
   pass
 
@@ -82,4 +102,14 @@ func _on_Timeout():
   update_time(logged)
   pass
 
+func _prepareTimer():
+  # Countdown timer for counting up
+  timer = Timer.new()
+  timer.autostart = true
+  timer.wait_time = 1
+  timer.name = "Timer"
+  timer.paused = !Variables.stopwatchRun;
+  # warning-ignore:return_value_discarded
+  timer.connect("timeout", self, "_on_Timeout")
+  add_child(timer)
 

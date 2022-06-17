@@ -3,8 +3,9 @@ extends Control
 # Declare member variables here. Examples:
 onready var menuList = $"MenuList"
 var settingsBtn := Button.new()
-var secondToggle := CheckButton.new();
-var use24Toggle := CheckButton.new();
+var toggle1;
+var toggle2;
+var toggle3;
 
 var menuPostion = null
 var menuSize = null
@@ -12,12 +13,44 @@ var menuHide = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+
+
+  if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):
+    print("alarm")
+
+  elif (Variables.currentScene == Variables.CurrentSceneIs.CLOCK):
+    toggle1 = CheckButton.new()
+    toggle1.name = "SecondToggle";
+    toggle1.text = "show seconds";
+    toggle2 = CheckButton.new()
+    toggle2.name = "Use24Toggle";
+    toggle2.text = "use 24HR clock";
+    toggle3 = CheckButton.new()
+    toggle3.visible = false;
+
+  elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
+    print("timer")
+
+  elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
+    toggle1 = Button.new()
+    toggle1.name = "Start";
+    toggle1.text = "start";
+    toggle2 = Button.new()
+    toggle2.name = "Lap";
+    toggle2.text = "lap";
+    toggle2.disabled = true;
+    toggle3 = Button.new()
+    toggle3.name = "Reset";
+    toggle3.text = "reset";
+    toggle3.disabled = true;
+
   # Settings button
   settingsBtn.name = "SettingsBtn";
   settingsBtn.text = "settings";
   settingsBtn.align = Button.ALIGN_LEFT;
   settingsBtn.flat = true;
   settingsBtn.toggle_mode = true;
+  # warning-ignore:return_value_discarded
   settingsBtn.connect("toggled", self, "_on_SettingsBtn_toggled");
   menuList.add_child(settingsBtn);
 
@@ -25,20 +58,31 @@ func _ready():
   var paddingLabel1 := Label.new();
   paddingLabel1.name = "SettingsPad1";
   menuList.add_child(paddingLabel1);
+  paddingLabel1.rect_size.y = 100
+
+  # First toggle
+  toggle1.align = Button.ALIGN_LEFT;
+  toggle1.flat = true;
+  toggle1.toggle_mode = true;
+  # warning-ignore:return_value_discarded
+  toggle1.connect("toggled", self,"_on_FirstToggle_toggled");
+  menuList.add_child(toggle1);
 
   # Second toggle
-  secondToggle.name = "SecondToggle";
-  secondToggle.text = "show seconds";
-  secondToggle.align = Button.ALIGN_LEFT;
-  secondToggle.connect("toggled", self,"_on_SecondToggle_toggled");
-  menuList.add_child(secondToggle);
+  toggle2.align = Button.ALIGN_LEFT;
+  toggle2.flat = true;
+  toggle2.toggle_mode = true;
+  # warning-ignore:return_value_discarded
+  toggle2.connect("toggled", self,"_on_SecondToggle_toggled");
+  menuList.add_child(toggle2);
 
-  # 24 Hour toggle
-  use24Toggle.name = "Use24Toggle";
-  use24Toggle.text = "use 24HR clock";
-  use24Toggle.align = Button.ALIGN_LEFT;
-  use24Toggle.connect("toggled", self,"_on_User24Toggle_toggled");
-  menuList.add_child(use24Toggle);
+  # Third toggle
+  toggle3.align = Button.ALIGN_LEFT;
+  toggle3.flat = true;
+  toggle3.toggle_mode = true;
+  # warning-ignore:return_value_discarded
+  toggle3.connect("toggled", self,"_on_ThirdToggle_toggled");
+  menuList.add_child(toggle3);
 
   # Padding label
   var paddingLabel2 := Label.new();
@@ -91,12 +135,64 @@ func _on_SettingsBtn_toggled(button_pressed):
   Variables.showSettings = button_pressed;
   pass
 
-# Manual signal connect
-func _on_SecondToggle_toggled(button_pressed):
-  Variables.showSeconds = button_pressed;
-  pass # Replace with function body.
+# Signal connect via code
+func _on_FirstToggle_toggled(button_pressed):
+  #if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):
+  #  print("alarm")
+
+  # replace with elif
+  if (Variables.currentScene == Variables.CurrentSceneIs.CLOCK):
+    Variables.showSeconds = button_pressed;
+
+  #elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
+  #  print("timer")
+
+  elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
+    Variables.stopwatchRun = button_pressed;
+    if (Variables.stopwatchRun):
+      toggle1.text = "pause"
+      toggle2.disabled = false;
+      toggle3.disabled = false;
+    else:
+      toggle1.text = "resume"
+      toggle2.disabled = true;
+  pass
 
 # Signal connect via code
-func _on_User24Toggle_toggled(button_pressed):
-  Variables.use24hour = button_pressed;
+func _on_SecondToggle_toggled(button_pressed):
+  #if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):
+  #  print("alarm")
+
+  # replace with elif
+  if (Variables.currentScene == Variables.CurrentSceneIs.CLOCK):
+    Variables.use24hour = button_pressed;
+
+  #elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
+  #  print("timer")
+
+  elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
+    print("stopwatch")
+  pass
+
+# Signal connect via code
+# warning-ignore:unused_argument
+func _on_ThirdToggle_toggled(button_pressed):
+  #if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):
+  #  Variables.stopwatchReset = null;
+  #  print("alarm")
+
+  # replace with elif
+  if (Variables.currentScene == Variables.CurrentSceneIs.CLOCK):
+    print("clock")
+
+  #elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
+  #  print("timer")
+
+  elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
+    toggle1.text = "start"
+    toggle1.pressed = false;
+    toggle2.disabled = true;
+    toggle3.disabled = true;
+    Variables.stopwatchRun = false;
+    Variables.stopwatchReset = true;
   pass
