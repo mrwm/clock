@@ -7,12 +7,13 @@ var logged = {
   second = 0,
   milsec = 0
   }
-var lapFlip = Variables.stopwatchFlip
 
 onready var hourLabel = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
 onready var minuteLabel = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
 onready var secondLabel = $"VBoxContainer/CenterContainer/TimeSplit/Second";
 onready var milsecLabel = $"VBoxContainer/CenterContainer/TimeSplit/milsecLabel";
+
+onready var lapContainer = $"LapContainer";
 
 var timer := Timer.new()
 
@@ -22,6 +23,9 @@ func _ready():
   var Menu : PackedScene = load("res://Menu.tscn")
   var menu = Menu.instance()
   add_child(menu)
+
+  lapContainer.rect_size.y = rect_size.y / 3
+  lapContainer.rect_position.y = rect_size.y - (rect_size.y / 2.15)
 
   _prepareTimer()
 
@@ -35,6 +39,7 @@ func _ready():
   Variables.stopwatchRun = false;
 
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
   var systemMs = 1
@@ -44,12 +49,6 @@ func _process(_delta):
 
   logged.milsec = systemMs;
   timer.paused = !Variables.stopwatchRun;
-#    var deltamin = float(str(delta).left(5))*1000
-#    if (timer.time_left == deltamin):
-#      pass
-#    timer.paused = !Variables.stopwatchRun
-#  else:
-#    timer.paused = !Variables.stopwatchRun
 
   # Pad numbers with a leading zero if the number is less than 10
   # Convert variable to string, then check if it is 2 digits long
@@ -78,14 +77,32 @@ func _process(_delta):
       }
     timer.queue_free()
     _prepareTimer()
+    for child in lapContainer.get_child_count():
+      lapContainer.get_child(child).queue_free()
+      Variables.stopwatchLap = [];
     Variables.stopwatchReset = null;
   elif (Variables.stopwatchReset != null):
     timer.start()
     pass
 
   # Lap button
-  if (Variables.stopwatchFlip == lapFlip):
-    
+  if (Variables.stopwatchFlip):
+    Variables.stopwatchLap.append(logged);
+    Variables.stopwatchFlip = false;
+    var label := Label.new();
+    label.align = Label.ALIGN_CENTER;
+    label.valign = Label.ALIGN_CENTER;
+    label.size_flags_horizontal = 3;
+    label.size_flags_vertical = 1;
+    label.text = str(logged.hour) + ":" + str(logged.minute) + \
+                  ":" + str(logged.second) + ":" + str(logged.milsec)    
+    label.name = "Lap-" + str(int(logged.milsec) + int(logged.second));
+    lapContainer.add_child(label);
+    lapContainer.move_child(label, 0)
+    if (Variables.stopwatchLap.size() > 4):
+      Variables.stopwatchLap.remove(Variables.stopwatchLap.size() - 1)
+      lapContainer.get_child(Variables.stopwatchLap.size()).queue_free()
+  else:
     pass
   pass
 

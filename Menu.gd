@@ -173,7 +173,6 @@ func _on_SecondToggle_toggled(button_pressed):
 
   elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
     Variables.stopwatchFlip = !Variables.stopwatchFlip
-    print("stopwatch")
   pass
 
 # Signal connect via code
@@ -191,10 +190,10 @@ func _on_ThirdToggle_toggled(button_pressed):
   #  print("timer")
 
   elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
-    toggle1.text = "start"
     toggle1.pressed = false;
     toggle2.disabled = true;
     toggle3.disabled = true;
     Variables.stopwatchRun = false;
     Variables.stopwatchReset = true;
+    toggle1.text = "start"
   pass

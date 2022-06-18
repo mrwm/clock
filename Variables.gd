@@ -12,7 +12,7 @@ var showSeconds = false;
 var use24hour = false;
 
 # Stopwatch
-var stopwatchRun;
+var stopwatchRun;       # true/false
 var stopwatchLap = [];
-var stopwatchFlip = true;
-var stopwatchReset;
+var stopwatchFlip;      # true/false
+var stopwatchReset;     # true/false
