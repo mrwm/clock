@@ -131,12 +131,12 @@ func _process(delta):
         self.rect_position.y = menuHide
     settingsBtn.pressed = false
 
-# Signal connect via code
+# Settings button
 func _on_SettingsBtn_toggled(button_pressed):
   Variables.showSettings = button_pressed;
   pass
 
-# Signal connect via code
+# First Toggle button
 func _on_FirstToggle_toggled(button_pressed):
   #if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):
   #  print("alarm")
@@ -159,7 +159,7 @@ func _on_FirstToggle_toggled(button_pressed):
       toggle2.disabled = true;
   pass
 
-# Signal connect via code
+# Second Toggle button
 func _on_SecondToggle_toggled(button_pressed):
   #if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):
   #  print("alarm")
@@ -175,7 +175,7 @@ func _on_SecondToggle_toggled(button_pressed):
     Variables.stopwatchFlip = !Variables.stopwatchFlip
   pass
 
-# Signal connect via code
+# Third Toggle button
 # warning-ignore:unused_argument
 func _on_ThirdToggle_toggled(button_pressed):
   #if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):

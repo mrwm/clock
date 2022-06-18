@@ -38,5 +38,8 @@ func _process(_delta):
         var stopwatchScene = StopwatchScene.instance()
         add_child(stopwatchScene)
         pass
+    var Menu : PackedScene = load("res://Menu.tscn")
+    var menu = Menu.instance()
+    add_child(menu)
     isSceneLoaded = true
   pass

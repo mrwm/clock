@@ -20,9 +20,6 @@ var timer := Timer.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
   Variables.currentScene = Variables.CurrentSceneIs.STOPWATCH
-  var Menu : PackedScene = load("res://Menu.tscn")
-  var menu = Menu.instance()
-  add_child(menu)
 
   lapContainer.rect_size.y = rect_size.y / 3
   lapContainer.rect_position.y = rect_size.y - (rect_size.y / 2.15)

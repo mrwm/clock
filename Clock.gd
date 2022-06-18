@@ -11,9 +11,6 @@ onready var second = $"VBoxContainer/CenterContainer/TimeSplit/Second";
 # Called when the node enters the scene tree for the first time.
 func _ready():
   Variables.currentScene = Variables.CurrentSceneIs.CLOCK
-  var Menu : PackedScene = load("res://Menu.tscn")
-  var menu = Menu.instance()
-  add_child(menu)
 
   #print(Engine.time_scale) #How fast we want the program to run
   ampm.set_text("")

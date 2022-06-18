@@ -3,7 +3,7 @@ extends Node
 
 enum CurrentSceneIs { ALARM, CLOCK, TIMER, STOPWATCH }
 var currentScene = null
-var defaultScene = CurrentSceneIs.STOPWATCH
+var defaultScene = CurrentSceneIs.CLOCK
 
 var showSettings = false;
 
