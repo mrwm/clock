@@ -7,6 +7,9 @@ var defaultScene = CurrentSceneIs.CLOCK
 
 var showSettings = false;
 
+enum SwipeDirection { UP, DOWN, LEFT, RIGHT }
+var swipeDirection = null
+
 # Clock
 var showSeconds = false;
 var use24hour = false;

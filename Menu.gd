@@ -106,8 +106,10 @@ func _ready():
 # -[x] Make the settings button slide up & reveal more info when pressed
 # -[x] Make the menu slide up when a slide-up gesture is detected
 # -[x] Make the menu entries via code, instead of manual
+# -[x] Transfer loading menu from within different scene to the main scene
 # -[ ] Load different parts of the menu depending on the current scene
-# -[ ] Transfer loading menu from within different scene to the main scene
+# -[ ] Fix menu text after transitions
+# -[ ] Change menu from settings to bottom bar
 #
 
 var t1 = 0.0
