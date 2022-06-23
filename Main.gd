@@ -71,16 +71,17 @@ func _process(_delta):
     print("down")
     pass
   if (Variables.swipeDirection == Variables.SwipeDirection.LEFT):
-    menu.queue_free()
     Variables.currentScene = Variables.CurrentSceneIs.STOPWATCH
     clockScene.visible = false
     stopwatchScene.visible = true
+    Variables.switchScene = true
     print("left")
     pass
   if (Variables.swipeDirection == Variables.SwipeDirection.RIGHT):
     Variables.currentScene = Variables.CurrentSceneIs.CLOCK
     clockScene.visible = true
     stopwatchScene.visible = false
+    Variables.switchScene = true
     print("right")
     pass
   Variables.swipeDirection = null
