@@ -8,7 +8,6 @@ var toggle2;
 var toggle3;
 
 var menuPostion = null
-var menuSize = null
 var menuHide = 0
 
 # Called when the node enters the scene tree for the first time.
@@ -90,13 +89,12 @@ func _ready():
 
   # Menu settings
   menuPostion = self.rect_position;
-  #settingsBtn.connect("toggled", self,"_on_SettingsBtn_toggled");
   # Hide the menu except for the settings button
-  menuSize = self.rect_size;
   for i in $MenuList.get_child_count():
-    menuHide += $MenuList.get_child(i).rect_size.y;
+    if ($MenuList.get_child(i).visible):
+      menuHide += $MenuList.get_child(i).rect_size.y;
     pass
-  menuHide = menuHide - ($MenuList.get_child(0).rect_size.y + $MenuList.get_child(0).rect_size.y);
+  menuHide = menuHide - $MenuList.get_child(0).rect_size.y;
   pass # Replace with function body.
 
 
@@ -106,10 +104,10 @@ func _ready():
 # -[x] Make the menu slide up when a slide-up gesture is detected
 # -[x] Make the menu entries via code, instead of manual
 # -[x] Transfer loading menu from within different scene to the main scene
-# -[ ] Load different parts of the menu depending on the current scene
+# -[x] Change menu list item order after deleting and readding them
+# -[x] Load different parts of the menu depending on the current scene
 # -[ ] Fix menu text after transitions
 # -[ ] Change menu from settings to bottom bar
-# -[ ] Change menu list item order after deleting and readding them
 #
 
 var t1 = 0.0
@@ -134,43 +132,39 @@ func _process(delta):
     settingsBtn.pressed = false
 
   if (Variables.switchScene):
-    _update_btn_text(Variables.currentScene)
     Variables.switchScene = false
-    pass
+    _update_btn_text(Variables.currentScene)
 
 # Update button text on current scene
 func _update_btn_text(scene):
+  toggle1.queue_free()
+  toggle2.queue_free()
+  toggle3.queue_free()
 
-  if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):
+  if (scene == Variables.CurrentSceneIs.ALARM):
     print("alarm")
 
-  elif (Variables.currentScene == Variables.CurrentSceneIs.CLOCK):
-    toggle1.queue_free()
+  elif (scene == Variables.CurrentSceneIs.CLOCK):
     toggle1 = CheckButton.new()
     toggle1.name = "SecondToggle";
     toggle1.text = "show seconds";
-    toggle2.queue_free()
     toggle2 = CheckButton.new()
     toggle2.name = "Use24Toggle";
     toggle2.text = "use 24HR clock";
-    toggle3.queue_free()
     toggle3 = CheckButton.new()
     toggle3.visible = false;
 
-  elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
+  elif (scene == Variables.CurrentSceneIs.TIMER):
     print("timer")
 
-  elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
-    toggle1.queue_free()
+  elif (scene == Variables.CurrentSceneIs.STOPWATCH):
     toggle1 = Button.new()
     toggle1.name = "Start";
     toggle1.text = "start";
-    toggle2.queue_free()
     toggle2 = Button.new()
     toggle2.name = "Lap";
     toggle2.text = "lap";
     toggle2.disabled = true;
-    toggle3.queue_free()
     toggle3 = Button.new()
     toggle3.name = "Reset";
     toggle3.text = "reset";
@@ -200,6 +194,11 @@ func _update_btn_text(scene):
   # warning-ignore:return_value_discarded
   toggle3.connect("toggled", self,"_on_ThirdToggle_toggled");
   menuList.add_child(toggle3);
+
+  # move the buttons to position
+  menuList.move_child(toggle1, 2);
+  menuList.move_child(toggle2, 3);
+  menuList.move_child(toggle3, 4);
   pass
 
 # Settings button

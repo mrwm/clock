@@ -72,15 +72,15 @@ func _process(_delta):
     pass
   if (Variables.swipeDirection == Variables.SwipeDirection.LEFT):
     Variables.currentScene = Variables.CurrentSceneIs.STOPWATCH
-    clockScene.visible = false
-    stopwatchScene.visible = true
+    $Clock.visible = false
+    $Stopwatch.visible = true
     Variables.switchScene = true
     print("left")
     pass
   if (Variables.swipeDirection == Variables.SwipeDirection.RIGHT):
     Variables.currentScene = Variables.CurrentSceneIs.CLOCK
-    clockScene.visible = true
-    stopwatchScene.visible = false
+    $Clock.visible = true
+    $Stopwatch.visible = false
     Variables.switchScene = true
     print("right")
     pass

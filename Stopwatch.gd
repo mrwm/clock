@@ -26,8 +26,6 @@ func _ready():
 
   _prepareTimer()
 
-  Variables.currentScene = Variables.CurrentSceneIs.STOPWATCH
-
   hourLabel.rect_min_size = Vector2(120,0);
   minuteLabel.rect_min_size = Vector2(120,0);
   secondLabel.rect_min_size = Vector2(120,0);
