@@ -13,35 +13,35 @@ var menuHide = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 
-  if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):
-    print("alarm")
-
-  elif (Variables.currentScene == Variables.CurrentSceneIs.CLOCK):
-    toggle1 = CheckButton.new()
-    toggle1.name = "SecondToggle";
-    toggle1.text = "show seconds";
-    toggle2 = CheckButton.new()
-    toggle2.name = "Use24Toggle";
-    toggle2.text = "use 24HR clock";
-    toggle3 = CheckButton.new()
-    toggle3.visible = false;
-
-  elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
-    print("timer")
-
-  elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
-    toggle1 = Button.new()
-    toggle1.name = "Start";
-    toggle1.text = "start";
-    toggle2 = Button.new()
-    toggle2.name = "Lap";
-    toggle2.text = "lap";
-    toggle2.disabled = true;
-    toggle3 = Button.new()
-    toggle3.name = "Reset";
-    toggle3.text = "reset";
-    toggle3.disabled = true;
-
+#  if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):
+#    print("alarm")
+#
+#  elif (Variables.currentScene == Variables.CurrentSceneIs.CLOCK):
+#    toggle1 = CheckButton.new()
+#    toggle1.name = "SecondToggle";
+#    toggle1.text = "show seconds";
+#    toggle2 = CheckButton.new()
+#    toggle2.name = "Use24Toggle";
+#    toggle2.text = "use 24HR clock";
+#    toggle3 = CheckButton.new()
+#    toggle3.visible = false;
+#
+#  elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
+#    print("timer")
+#
+#  elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
+#    toggle1 = Button.new()
+#    toggle1.name = "Start";
+#    toggle1.text = "start";
+#    toggle2 = Button.new()
+#    toggle2.name = "Lap";
+#    toggle2.text = "lap";
+#    toggle2.disabled = true;
+#    toggle3 = Button.new()
+#    toggle3.name = "Reset";
+#    toggle3.text = "reset";
+#    toggle3.disabled = true;
+#
   # Settings button
   settingsBtn.name = "SettingsBtn";
   settingsBtn.text = "settings";
@@ -57,30 +57,31 @@ func _ready():
   paddingLabel1.name = "SettingsPad1";
   menuList.add_child(paddingLabel1);
   paddingLabel1.rect_size.y = 100
-
-  # First toggle
-  toggle1.align = Button.ALIGN_LEFT;
-  toggle1.flat = true;
-  toggle1.toggle_mode = true;
-  # warning-ignore:return_value_discarded
-  toggle1.connect("toggled", self,"_on_FirstToggle_toggled");
-  menuList.add_child(toggle1);
-
-  # Second toggle
-  toggle2.align = Button.ALIGN_LEFT;
-  toggle2.flat = true;
-  toggle2.toggle_mode = true;
-  # warning-ignore:return_value_discarded
-  toggle2.connect("toggled", self,"_on_SecondToggle_toggled");
-  menuList.add_child(toggle2);
-
-  # Third toggle
-  toggle3.align = Button.ALIGN_LEFT;
-  toggle3.flat = true;
-  toggle3.toggle_mode = true;
-  # warning-ignore:return_value_discarded
-  toggle3.connect("toggled", self,"_on_ThirdToggle_toggled");
-  menuList.add_child(toggle3);
+#
+#  # First toggle
+#  toggle1.align = Button.ALIGN_LEFT;
+#  toggle1.flat = true;
+#  toggle1.toggle_mode = true;
+#  # warning-ignore:return_value_discarded
+#  toggle1.connect("toggled", self,"_on_FirstToggle_toggled");
+#  menuList.add_child(toggle1);
+#
+#  # Second toggle
+#  toggle2.align = Button.ALIGN_LEFT;
+#  toggle2.flat = true;
+#  toggle2.toggle_mode = true;
+#  # warning-ignore:return_value_discarded
+#  toggle2.connect("toggled", self,"_on_SecondToggle_toggled");
+#  menuList.add_child(toggle2);
+#
+#  # Third toggle
+#  toggle3.align = Button.ALIGN_LEFT;
+#  toggle3.flat = true;
+#  toggle3.toggle_mode = true;
+#  # warning-ignore:return_value_discarded
+#  toggle3.connect("toggled", self,"_on_ThirdToggle_toggled");
+#  menuList.add_child(toggle3);
+  _update_btn_text(Variables.currentScene)
 
   # Padding label
   var paddingLabel2 := Label.new();
@@ -90,13 +91,11 @@ func _ready():
   # Menu settings
   menuPostion = self.rect_position;
   # Hide the menu except for the settings button
-  for i in $MenuList.get_child_count():
+  for i in ($MenuList.get_child_count()):
     if ($MenuList.get_child(i).visible):
       menuHide += $MenuList.get_child(i).rect_size.y;
     pass
   menuHide = menuHide - $MenuList.get_child(0).rect_size.y;
-  pass # Replace with function body.
-
 
 # TODO:
 #
@@ -106,8 +105,9 @@ func _ready():
 # -[x] Transfer loading menu from within different scene to the main scene
 # -[x] Change menu list item order after deleting and readding them
 # -[x] Load different parts of the menu depending on the current scene
-# -[ ] Fix menu text after transitions
+# -[x] Fix menu text after transitions
 # -[ ] Change menu from settings to bottom bar
+# -[ ] Fix menu button not updating when switching from started stopwatch to clock and back
 #
 
 var t1 = 0.0
@@ -132,14 +132,17 @@ func _process(delta):
     settingsBtn.pressed = false
 
   if (Variables.switchScene):
-    Variables.switchScene = false
     _update_btn_text(Variables.currentScene)
+    Variables.switchScene = false
+    #print($MenuList.get_child_count())
 
 # Update button text on current scene
 func _update_btn_text(scene):
-  toggle1.queue_free()
-  toggle2.queue_free()
-  toggle3.queue_free()
+  
+  if(Variables.switchScene):
+    toggle1.queue_free()
+    toggle2.queue_free()
+    toggle3.queue_free()
 
   if (scene == Variables.CurrentSceneIs.ALARM):
     print("alarm")
@@ -151,8 +154,11 @@ func _update_btn_text(scene):
     toggle2 = CheckButton.new()
     toggle2.name = "Use24Toggle";
     toggle2.text = "use 24HR clock";
-    toggle3 = CheckButton.new()
-    toggle3.visible = false;
+    toggle3 = Button.new()
+    toggle3.name = "pad";
+    toggle3.text = "pad";
+    toggle3.modulate.a = 0;
+    toggle3.disabled = true;
 
   elif (scene == Variables.CurrentSceneIs.TIMER):
     print("timer")
