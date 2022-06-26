@@ -13,35 +13,6 @@ var menuHide = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 
-#  if (Variables.currentScene == Variables.CurrentSceneIs.ALARM):
-#    print("alarm")
-#
-#  elif (Variables.currentScene == Variables.CurrentSceneIs.CLOCK):
-#    toggle1 = CheckButton.new()
-#    toggle1.name = "SecondToggle";
-#    toggle1.text = "show seconds";
-#    toggle2 = CheckButton.new()
-#    toggle2.name = "Use24Toggle";
-#    toggle2.text = "use 24HR clock";
-#    toggle3 = CheckButton.new()
-#    toggle3.visible = false;
-#
-#  elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
-#    print("timer")
-#
-#  elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
-#    toggle1 = Button.new()
-#    toggle1.name = "Start";
-#    toggle1.text = "start";
-#    toggle2 = Button.new()
-#    toggle2.name = "Lap";
-#    toggle2.text = "lap";
-#    toggle2.disabled = true;
-#    toggle3 = Button.new()
-#    toggle3.name = "Reset";
-#    toggle3.text = "reset";
-#    toggle3.disabled = true;
-#
   # Settings button
   settingsBtn.name = "SettingsBtn";
   settingsBtn.text = "settings";
@@ -57,31 +28,9 @@ func _ready():
   paddingLabel1.name = "SettingsPad1";
   menuList.add_child(paddingLabel1);
   paddingLabel1.rect_size.y = 100
-#
-#  # First toggle
-#  toggle1.align = Button.ALIGN_LEFT;
-#  toggle1.flat = true;
-#  toggle1.toggle_mode = true;
-#  # warning-ignore:return_value_discarded
-#  toggle1.connect("toggled", self,"_on_FirstToggle_toggled");
-#  menuList.add_child(toggle1);
-#
-#  # Second toggle
-#  toggle2.align = Button.ALIGN_LEFT;
-#  toggle2.flat = true;
-#  toggle2.toggle_mode = true;
-#  # warning-ignore:return_value_discarded
-#  toggle2.connect("toggled", self,"_on_SecondToggle_toggled");
-#  menuList.add_child(toggle2);
-#
-#  # Third toggle
-#  toggle3.align = Button.ALIGN_LEFT;
-#  toggle3.flat = true;
-#  toggle3.toggle_mode = true;
-#  # warning-ignore:return_value_discarded
-#  toggle3.connect("toggled", self,"_on_ThirdToggle_toggled");
-#  menuList.add_child(toggle3);
-  _update_btn_text(Variables.currentScene)
+
+  # Toggle buttons
+  update_btn(Variables.currentScene)
 
   # Padding label
   var paddingLabel2 := Label.new();
@@ -95,7 +44,7 @@ func _ready():
     if ($MenuList.get_child(i).visible):
       menuHide += $MenuList.get_child(i).rect_size.y;
     pass
-  menuHide = menuHide - $MenuList.get_child(0).rect_size.y;
+  menuHide = menuHide - ($MenuList.get_child(0).rect_size.y * 2);
 
 # TODO:
 #
@@ -130,23 +79,20 @@ func _process(delta):
       if self.rect_position.y > menuHide:
         self.rect_position.y = menuHide
     settingsBtn.pressed = false
-
   if (Variables.switchScene):
-    _update_btn_text(Variables.currentScene)
+    update_btn(Variables.currentScene)
     Variables.switchScene = false
-    #print($MenuList.get_child_count())
 
-# Update button text on current scene
-func _update_btn_text(scene):
-  
+
+func update_btn(scene):
+  """Update the toggle buttons for the information specified with 'scene'"""
+
   if(Variables.switchScene):
     toggle1.queue_free()
     toggle2.queue_free()
     toggle3.queue_free()
-
   if (scene == Variables.CurrentSceneIs.ALARM):
-    print("alarm")
-
+    print("menu: alarm")
   elif (scene == Variables.CurrentSceneIs.CLOCK):
     toggle1 = CheckButton.new()
     toggle1.name = "SecondToggle";
@@ -159,10 +105,8 @@ func _update_btn_text(scene):
     toggle3.text = "pad";
     toggle3.modulate.a = 0;
     toggle3.disabled = true;
-
   elif (scene == Variables.CurrentSceneIs.TIMER):
-    print("timer")
-
+    print("menu: timer")
   elif (scene == Variables.CurrentSceneIs.STOPWATCH):
     toggle1 = Button.new()
     toggle1.name = "Start";
@@ -175,6 +119,16 @@ func _update_btn_text(scene):
     toggle3.name = "Reset";
     toggle3.text = "reset";
     toggle3.disabled = true;
+    var milsec = $"../Stopwatch/VBoxContainer/CenterContainer/TimeSplit/milsecLabel".text
+    if (Variables.stopwatchRun):
+      toggle1.text = "pause"
+      toggle2.disabled = false;
+      toggle3.disabled = false;
+    elif (milsec != "000"): # lets hope users don't stop the timer at perfect "000"
+      toggle1.text = "resume"
+      toggle2.disabled = true;
+      toggle3.disabled = false;
+      pass
 
   # First toggle
   toggle1.align = Button.ALIGN_LEFT;
@@ -206,6 +160,10 @@ func _update_btn_text(scene):
   menuList.move_child(toggle2, 3);
   menuList.move_child(toggle3, 4);
   pass
+
+###########
+# Buttons #
+###########
 
 # Settings button
 func _on_SettingsBtn_toggled(button_pressed):
