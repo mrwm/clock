@@ -55,8 +55,9 @@ func _ready():
 # -[x] Change menu list item order after deleting and readding them
 # -[x] Load different parts of the menu depending on the current scene
 # -[x] Fix menu text after transitions
+# -[x] Fix menu button start/resume text on transition
+# -[x] Fix menu button not updating when switching from started stopwatch to clock and back
 # -[ ] Change menu from settings to bottom bar
-# -[ ] Fix menu button not updating when switching from started stopwatch to clock and back
 #
 
 var t1 = 0.0
@@ -119,12 +120,16 @@ func update_btn(scene):
     toggle3.name = "Reset";
     toggle3.text = "reset";
     toggle3.disabled = true;
-    var milsec = $"../Stopwatch/VBoxContainer/CenterContainer/TimeSplit/milsecLabel".text
+    var isZero = true
+    var timeLabels = $"../Stopwatch/VBoxContainer/CenterContainer/TimeSplit"
+    for content in timeLabels.get_children():
+      if (int(content.text) > 0):
+        isZero = false
     if (Variables.stopwatchRun):
       toggle1.text = "pause"
       toggle2.disabled = false;
       toggle3.disabled = false;
-    elif (milsec != "000"): # lets hope users don't stop the timer at perfect "000"
+    elif (not isZero):
       toggle1.text = "resume"
       toggle2.disabled = true;
       toggle3.disabled = false;
