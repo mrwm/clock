@@ -78,6 +78,7 @@ project.properties
 platform/android/java/*/.cxx/
 platform/android/java/*/build/
 platform/android/java/*/libs/
+*.idsig
 
 # iOS
 *.dSYM
