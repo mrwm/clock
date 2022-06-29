@@ -17,6 +17,12 @@ var use24hour = false;
 
 # Stopwatch
 var stopwatchRun;       # true/false
-var stopwatchLap = [];
+var stopwatchLap := Array([]);
 var stopwatchFlip;      # true/false
 var stopwatchReset;     # true/false
+
+# Timer
+var setTimer = false;   # true/false
+var timerRun = false;   # true/false
+var resetTimer = false; # true/false
+var timeLeft;           # Dictionary
