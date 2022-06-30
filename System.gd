@@ -49,6 +49,4 @@ func calculateDirection(firstPt, secondPt):
     else:
       #print("no change in xy: " + str(deviation))
       pass
-
-  #Variables.swipeDirection = null
   

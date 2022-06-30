@@ -11,12 +11,15 @@ onready var hourLabel = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
 onready var minuteLabel = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
 onready var secondLabel = $"VBoxContainer/CenterContainer/TimeSplit/Second";
 
+onready var btn = $"VBoxContainer/Button";
 
 var timer := Timer.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
   #Variables.currentScene = Variables.CurrentSceneIs.TIMER
+  btn.connect("toggled", self, "_on_btn_toggled")
+  btn.toggle_mode = true
 
   _prepareTimer()
 
@@ -24,19 +27,13 @@ func _ready():
   minuteLabel.rect_min_size = Vector2(120,0);
   secondLabel.rect_min_size = Vector2(120,0);
 
-  Variables.stopwatchRun = false;
+  Variables.timerRun = false;
 
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-  var systemMs = 1
-  if (timer != null):
-    systemMs = systemMs - timer.time_left
-    systemMs = float(str(systemMs).left(5))*1000
-
-  logged.milsec = systemMs;
-  timer.paused = !Variables.stopwatchRun;
+  timer.paused = !Variables.timerRun;
 
   # Pad numbers with a leading zero if the number is less than 10
   # Convert variable to string, then check if it is 2 digits long
@@ -92,3 +89,15 @@ func _prepareTimer():
   timer.connect("timeout", self, "_on_Timeout")
   add_child(timer)
 
+var number = 0;
+func _on_btn_toggled(event):
+  print(event, number)
+  OS.keyboard_set_current_layout(number)
+  if(event):
+    OS.show_virtual_keyboard()
+    number += 1
+  else:
+    OS.hide_virtual_keyboard()
+  
+  
+  pass

@@ -4,7 +4,7 @@ extends Node
 # Mode scenes
 #var AlarmScene : PackedScene = load("res://Alarm.tscn")
 var ClockScene : PackedScene = load("res://Clock.tscn")
-#var TimerScene : PackedScene = load("res://Timer.tscn")
+var TimerScene : PackedScene = load("res://Timer.tscn")
 var StopwatchScene : PackedScene = load("res://Stopwatch.tscn")
 
 # Only load the screen once
@@ -15,14 +15,11 @@ var screenDimentions := Vector2(0,0);
 # Called when the node enters the scene tree for the first time.
 func _ready():
   Variables.currentScene = Variables.defaultScene
-  pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
   screenDimentions = self.rect_size
 
   var clockScene = ClockScene.instance()
   var stopwatchScene = StopwatchScene.instance()
+  var timerScene = TimerScene.instance()
 
   var Menu : PackedScene = load("res://Menu.tscn")
   var menu = Menu.instance()
@@ -54,16 +51,23 @@ func _process(_delta):
     # Clock
     add_child(clockScene)
     clockScene.rect_size = screenDimentions
+    clockScene.visible = false; #remove once timer is finished
 
     # Stopwatch
     add_child(stopwatchScene)
     stopwatchScene.rect_size = screenDimentions;
     stopwatchScene.visible = false;
 
+    # Timer
+    add_child(timerScene)
+    timerScene.rect_size = screenDimentions;
+    timerScene.visible = true;
+
     # Menu
-    add_child(menu)
+    add_child(menu) #uncomment once timer is finished
     isSceneLoaded = true
 
+func _process(delta):
   if (Variables.swipeDirection == Variables.SwipeDirection.UP):
     print("up")
     pass
