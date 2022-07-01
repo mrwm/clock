@@ -46,6 +46,7 @@ func _ready():
     pass
   menuHide = menuHide - ($MenuList.get_child(0).rect_size.y * 2);
 
+
 # TODO:
 #
 # -[x] Make the settings button slide up & reveal more info when pressed
@@ -57,6 +58,7 @@ func _ready():
 # -[x] Fix menu text after transitions
 # -[x] Fix menu button start/resume text on transition
 # -[x] Fix menu button not updating when switching from started stopwatch to clock and back
+# -[ ] Get menu hitbox to only take up bottom of the screen
 # -[ ] Change menu from settings to bottom bar
 #
 

@@ -67,7 +67,7 @@ func _ready():
     add_child(menu) #uncomment once timer is finished
     isSceneLoaded = true
 
-func _process(delta):
+func _process(_delta):
   if (Variables.swipeDirection == Variables.SwipeDirection.UP):
     print("up")
     pass

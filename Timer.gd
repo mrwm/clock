@@ -4,28 +4,25 @@ extends Control
 var logged = {
   hour = 0,
   minute = 0,
-  second = 0,
+  second = 5, #temp time for now
   }
 
-onready var hourLabel = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
-onready var minuteLabel = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
-onready var secondLabel = $"VBoxContainer/CenterContainer/TimeSplit/Second";
-
-onready var btn = $"VBoxContainer/Button";
+onready var hourBtn = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
+onready var minuteBtn = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
+onready var secondBtn = $"VBoxContainer/CenterContainer/TimeSplit/Second";
 
 var timer := Timer.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-  #Variables.currentScene = Variables.CurrentSceneIs.TIMER
-  btn.connect("toggled", self, "_on_btn_toggled")
-  btn.toggle_mode = true
+  hourBtn.connect("toggled", self, "_on_hourBtn_toggled")
+  hourBtn.toggle_mode = true
 
   _prepareTimer()
 
-  hourLabel.rect_min_size = Vector2(120,0);
-  minuteLabel.rect_min_size = Vector2(120,0);
-  secondLabel.rect_min_size = Vector2(120,0);
+  hourBtn.rect_min_size = Vector2(120,0);
+  minuteBtn.rect_min_size = Vector2(120,0);
+  secondBtn.rect_min_size = Vector2(120,0);
 
   Variables.timerRun = false;
 
@@ -45,9 +42,9 @@ func _process(_delta):
     logged.second = str("0") + str(logged.second);
 
   # Set the text
-  hourLabel.set_text(str(logged.hour));
-  minuteLabel.set_text(str(logged.minute));
-  secondLabel.set_text(str(logged.second));
+  hourBtn.set_text(str(logged.hour));
+  minuteBtn.set_text(str(logged.minute));
+  secondBtn.set_text(str(logged.second));
 
   # Set timer button
   if (Variables.setTimer):
@@ -89,13 +86,10 @@ func _prepareTimer():
   timer.connect("timeout", self, "_on_Timeout")
   add_child(timer)
 
-var number = 0;
-func _on_btn_toggled(event):
-  print(event, number)
-  OS.keyboard_set_current_layout(number)
+func _on_hourBtn_toggled(event):
+  print(event)
   if(event):
     OS.show_virtual_keyboard()
-    number += 1
   else:
     OS.hide_virtual_keyboard()
   
