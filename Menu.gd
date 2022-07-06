@@ -39,6 +39,7 @@ func _ready():
 
   # Menu settings
   menuPostion = self.rect_position;
+  print(menuPostion)
   # Hide the menu except for the settings button
   for i in ($MenuList.get_child_count()):
     if ($MenuList.get_child(i).visible):
@@ -70,17 +71,17 @@ func _process(delta):
   if (Variables.showSettings):
     if t2 < duration:
       t2 += delta
-      self.rect_position.y = lerp(menuHide, 0, t2 / duration)
+      self.rect_position.y = lerp(menuPostion.y + menuHide, menuPostion.y, t2 / duration)
       t1 = 0
       settingsBtn.pressed = true
   else:
     # Hide the menu
     if t1 < duration:
       t1 += delta
-      self.rect_position.y = lerp(0, menuHide, t1 / duration)
+      self.rect_position.y = lerp(menuPostion.y, menuPostion.y + menuHide, t1 / duration)
       t2 = 0
-      if self.rect_position.y > menuHide:
-        self.rect_position.y = menuHide
+      if self.rect_position.y > menuPostion.y + menuHide:
+        self.rect_position.y = menuPostion.y + menuHide
     settingsBtn.pressed = false
   if (Variables.switchScene):
     update_btn(Variables.currentScene)
