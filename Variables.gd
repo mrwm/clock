@@ -24,5 +24,5 @@ var stopwatchReset;     # true/false
 # Timer
 var setTimer;           # true/false
 var timerRun;           # true/false
-var resetTimer = false; # true/false
+var resetTimer;         # true/false
 var timeLeft;           # Dictionary

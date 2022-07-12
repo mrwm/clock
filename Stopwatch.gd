@@ -89,8 +89,9 @@ func _process(_delta):
     label.valign = Label.ALIGN_CENTER;
     label.size_flags_horizontal = 3;
     label.size_flags_vertical = 1;
+    # TODO: change lap to delta between each lap time instead of time lapsed
     label.text = str(logged.hour) + ":" + str(logged.minute) + \
-                  ":" + str(logged.second) + ":" + str(logged.milsec)    
+                  ":" + str(logged.second) + ":" + str(logged.milsec)
     label.name = "Lap-" + str(int(logged.milsec) + int(logged.second));
     lapContainer.add_child(label);
     lapContainer.move_child(label, 0)

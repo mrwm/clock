@@ -61,7 +61,7 @@ func _ready():
     # Timer
     add_child(timerScene)
     timerScene.rect_size = screenDimentions;
-    timerScene.visible = true;
+    timerScene.visible = false;
 
     # Menu
     add_child(menu) #uncomment once timer is finished

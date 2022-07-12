@@ -15,8 +15,13 @@ var timer := Timer.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-  hourBtn.connect("toggled", self, "_on_hourBtn_toggled")
-  hourBtn.toggle_mode = true
+  hourBtn.connect("pressed", self, "_on_hourBtn_toggled")
+    #"", self, "_on_hourBtn_toggled")
+  hourBtn.flat = true
+  minuteBtn.flat = true
+  secondBtn.flat = true
+  
+  
 
   _prepareTimer()
 
@@ -25,6 +30,7 @@ func _ready():
   secondBtn.rect_min_size = Vector2(120,0);
 
   Variables.timerRun = false;
+  Variables.resetTimer = false;
 
 
 
@@ -86,12 +92,12 @@ func _prepareTimer():
   timer.connect("timeout", self, "_on_Timeout")
   add_child(timer)
 
-func _on_hourBtn_toggled(event):
-  print(event)
-  if(event):
-    OS.show_virtual_keyboard()
-  else:
-    OS.hide_virtual_keyboard()
+func _on_hourBtn_toggled():
+  print("pressed")
+  #if(event):
+  #  OS.show_virtual_keyboard()
+  #else:
+  #  OS.hide_virtual_keyboard()
   
   
   pass

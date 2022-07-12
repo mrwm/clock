@@ -39,7 +39,6 @@ func _ready():
 
   # Menu settings
   menuPostion = self.rect_position;
-  print(menuPostion)
   # Hide the menu except for the settings button
   for i in ($MenuList.get_child_count()):
     if ($MenuList.get_child(i).visible):
@@ -59,7 +58,7 @@ func _ready():
 # -[x] Fix menu text after transitions
 # -[x] Fix menu button start/resume text on transition
 # -[x] Fix menu button not updating when switching from started stopwatch to clock and back
-# -[ ] Get menu hitbox to only take up bottom of the screen
+# -[x] Get menu hitbox to only take up bottom of the screen
 # -[ ] Change menu from settings to bottom bar
 #
 
@@ -110,7 +109,17 @@ func update_btn(scene):
     toggle3.modulate.a = 0;
     toggle3.disabled = true;
   elif (scene == Variables.CurrentSceneIs.TIMER):
-    print("menu: timer")
+    toggle1 = Button.new()
+    toggle1.name = "Set time";
+    toggle1.text = "set time";
+    toggle2 = Button.new()
+    toggle2.name = "Start";
+    toggle2.text = "start";
+    toggle2.disabled = false;
+    toggle3 = Button.new()
+    toggle3.name = "Reset";
+    toggle3.text = "reset";
+    toggle3.disabled = true;
   elif (scene == Variables.CurrentSceneIs.STOPWATCH):
     toggle1 = Button.new()
     toggle1.name = "Start";
@@ -210,8 +219,15 @@ func _on_SecondToggle_toggled(button_pressed):
   if (Variables.currentScene == Variables.CurrentSceneIs.CLOCK):
     Variables.use24hour = button_pressed;
 
-  #elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
-  #  print("timer")
+  elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
+    Variables.timerRun = button_pressed
+    if (Variables.timerRun):
+      toggle2.text = "pause"
+      toggle1.disabled = true;
+      toggle3.disabled = true;
+    else:
+      toggle2.text = "resume"
+      toggle3.disabled = false;
 
   elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
     Variables.stopwatchFlip = !Variables.stopwatchFlip
@@ -229,8 +245,13 @@ func _on_ThirdToggle_toggled(button_pressed):
     #print("clock")
     pass
 
-  #elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
-  #  print("timer")
+  elif (Variables.currentScene == Variables.CurrentSceneIs.TIMER):
+    Variables.resetTimer = true;
+    if (not Variables.timerRun):
+      toggle1.pressed = false;
+      toggle1.disabled = false;
+      toggle2.text = "start";
+      toggle3.disabled = true;
 
   elif (Variables.currentScene == Variables.CurrentSceneIs.STOPWATCH):
     toggle1.pressed = false;
