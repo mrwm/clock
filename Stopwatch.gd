@@ -4,20 +4,17 @@ extends Control
 var logged = {
   hour = 0,
   minute = 0,
-  second = 0,
-  milsec = 0
+  second = 0
   }
 var delta = {
   hour = 0,
   minute = 0,
-  second = 0,
-  milsec = 0
+  second = 0
   }
 
 onready var hourLabel = $"VBoxContainer/CenterContainer/TimeSplit/Hour";
 onready var minuteLabel = $"VBoxContainer/CenterContainer/TimeSplit/Minute";
 onready var secondLabel = $"VBoxContainer/CenterContainer/TimeSplit/Second";
-onready var milsecLabel = $"VBoxContainer/CenterContainer/TimeSplit/milsecLabel";
 
 onready var lapContainer = $"LapContainer";
 
@@ -29,15 +26,15 @@ var prevTime = null;
 func _ready():
   #Variables.currentScene = Variables.CurrentSceneIs.STOPWATCH
 
-  lapContainer.rect_size.y = rect_size.y / 3
+  lapContainer.rect_size.y = rect_size.y / 4
   lapContainer.rect_position.y = rect_size.y - (rect_size.y / 2.15)
+  lapContainer.rect_clip_content = true
 
   _prepareTimer()
 
   hourLabel.rect_min_size = Vector2(120,0);
   minuteLabel.rect_min_size = Vector2(120,0);
   secondLabel.rect_min_size = Vector2(120,0);
-  milsecLabel.rect_min_size = Vector2(120,0);
 
   Variables.stopwatchRun = false;
 
@@ -50,39 +47,24 @@ func _process(_delta):
     systemMs = systemMs - timer.time_left
     systemMs = float(str(systemMs).left(5))*1000
 
-  logged.milsec = systemMs;
   timer.paused = !Variables.stopwatchRun;
-
-  # Pad numbers with a leading zero if the number is less than 10
-  # Convert variable to string, then check if it is 2 digits long
-  if len(str(logged.hour)) < 2:
-    logged.hour = str("0") + str(logged.hour);
-  if len(str(logged.minute)) < 2:
-    logged.minute = str("0") + str(logged.minute);
-  if len(str(logged.second)) < 2:
-    logged.second = str("0") + str(logged.second);
-  elif len(str(logged.milsec)) < 3:
-    logged.milsec = str("0") + str(logged.milsec);
 
   # Set the text
   hourLabel.set_text(str(logged.hour));
   minuteLabel.set_text(str(logged.minute));
   secondLabel.set_text(str(logged.second));
-  milsecLabel.set_text(str(logged.milsec));
 
   # Reset button
   if (Variables.stopwatchReset):
     logged = {
-      hour = 0,
-      minute = 0,
-      second = 0,
-      milsec = 0
+      hour = "00",
+      minute = "00",
+      second = "00"
       }
     delta = {
       hour = 0,
       minute = 0,
-      second = 0,
-      milsec = 0
+      second = 0
       }
     timer.queue_free()
     _prepareTimer()
@@ -104,28 +86,31 @@ func _process(_delta):
     label.size_flags_horizontal = 3;
     label.size_flags_vertical = 1;
     if lapContainer.get_child(0):
-      label.text = str(delta.hour) + ":" + str(delta.minute) + \
-                  ":" + str(delta.second) + ":" + str(logged.milsec)
+      var deltaText = lapContainer.get_child(0).text.split(':')
+      var deltaMilsec = deltaText[len(deltaText)-1]
+      var deltaIndex = int(deltaText[0].split('.')[0]) + 1
+      label.text = str(deltaIndex) + ". " + str(delta.hour) + ":" + str(delta.minute) + \
+                    ":" + str(delta.second)
     else:
-      label.text = str(logged.hour) + ":" + str(logged.minute) + \
-                  ":" + str(logged.second) + ":" + str(logged.milsec)
-    label.name = "Lap-" + str(int(logged.milsec) + int(logged.second));
+      label.text = "1. " + str(logged.hour) + ":" + str(logged.minute) + \
+                  ":" + str(logged.second)
+    label.name = "Lap-" + str(int(systemMs) + int(logged.second));
     delta = {
       hour = 0,
       minute = 0,
       second = 0,
-      milsec = 0
       }
     lapContainer.add_child(label);
     lapContainer.move_child(label, 0)
-    if (Variables.stopwatchLap.size() > 4):
+    if (Variables.stopwatchLap.size() > 20):
       Variables.stopwatchLap.remove(Variables.stopwatchLap.size() - 1)
       lapContainer.get_child(Variables.stopwatchLap.size()).queue_free()
   else:
     pass
+
   pass
 
-func update_time(time):
+func add_second(time):
   var updatedTime = time;
   updatedTime.second = int(updatedTime.second) + 1
 
@@ -138,9 +123,23 @@ func update_time(time):
 
   return updatedTime;
 
+# Do I really need to pad time?
+func pad_time(time):
+  """Pad numbers with a leading zero if the number is less than 10"""
+  var updatedTime = time;
+
+  # Convert variable to string, then check if it is 2 digits long
+  if len(str(updatedTime.hour)) < 2:
+    updatedTime.hour = str("0") + str(updatedTime.hour);
+  if len(str(updatedTime.minute)) < 2:
+    updatedTime.minute = str("0") + str(updatedTime.minute);
+  if len(str(updatedTime.second)) < 2:
+    updatedTime.second = str("0") + str(updatedTime.second);
+  return updatedTime;
+
 func _on_Timeout():
-  update_time(logged)
-  update_time(delta)
+  add_second(logged)
+  add_second(delta)
   pass
 
 func _prepareTimer():
