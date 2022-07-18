@@ -85,9 +85,9 @@ func _process(_delta):
     label.valign = Label.ALIGN_CENTER;
     label.size_flags_horizontal = 3;
     label.size_flags_vertical = 1;
+    # warning-ignore
     if lapContainer.get_child(0):
       var deltaText = lapContainer.get_child(0).text.split(':')
-      var deltaMilsec = deltaText[len(deltaText)-1]
       var deltaIndex = int(deltaText[0].split('.')[0]) + 1
       label.text = str(deltaIndex) + ". " + str(delta.hour) + ":" + str(delta.minute) + \
                     ":" + str(delta.second)
@@ -98,7 +98,7 @@ func _process(_delta):
     delta = {
       hour = 0,
       minute = 0,
-      second = 0,
+      second = 0
       }
     lapContainer.add_child(label);
     lapContainer.move_child(label, 0)

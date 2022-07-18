@@ -24,6 +24,9 @@ func _ready():
   var Menu : PackedScene = load("res://Menu.tscn")
   var menu = Menu.instance()
 
+  var ModeList : PackedScene = load("res://ModeList.tscn")
+  var modeList = ModeList.instance()
+
   if (!isSceneLoaded):
     #match Variables.currentScene:
     #  Variables.CurrentSceneIs.ALARM:
@@ -63,8 +66,11 @@ func _ready():
     timerScene.rect_size = screenDimentions;
     timerScene.visible = false;
 
+    # Mode List
+    add_child(modeList)
+
     # Menu
-    add_child(menu) #uncomment once timer is finished
+    add_child(menu)
     isSceneLoaded = true
 
 func _process(_delta):
