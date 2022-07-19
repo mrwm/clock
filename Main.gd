@@ -67,7 +67,7 @@ func _ready():
     timerScene.visible = false;
 
     # Mode List
-    add_child(modeList)
+    #add_child(modeList)
 
     # Menu
     add_child(menu)
