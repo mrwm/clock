@@ -1,6 +1,5 @@
 extends Node
 
-
 # Mode scenes
 #var AlarmScene : PackedScene = load("res://Alarm.tscn")
 var ClockScene : PackedScene = load("res://Clock.tscn")
@@ -24,8 +23,11 @@ func _ready():
   var Menu : PackedScene = load("res://Menu.tscn")
   var menu = Menu.instance()
 
-  var ModeList : PackedScene = load("res://ModeList.tscn")
-  var modeList = ModeList.instance()
+#  var ModeList : PackedScene = load("res://ModeList.tscn")
+#  var modeList = ModeList.instance()
+
+  var test = $"/root/System"
+  test.connect("swipeDirection", self, "directionChange")
 
   if (!isSceneLoaded):
     #match Variables.currentScene:
@@ -74,20 +76,23 @@ func _ready():
     isSceneLoaded = true
 
 func _process(_delta):
-  if (Variables.swipeDirection == Variables.SwipeDirection.UP):
+  pass
+
+func directionChange(direction):
+  if (direction == Variables.SwipeDirection.UP):
     print("up")
     pass
-  if (Variables.swipeDirection == Variables.SwipeDirection.DOWN):
+  if (direction == Variables.SwipeDirection.DOWN):
     print("down")
     pass
-  if (Variables.swipeDirection == Variables.SwipeDirection.LEFT):
+  if (direction == Variables.SwipeDirection.LEFT):
     Variables.currentScene = Variables.CurrentSceneIs.STOPWATCH
     $Clock.visible = false
     $Stopwatch.visible = true
     Variables.switchScene = true
     print("left")
     pass
-  if (Variables.swipeDirection == Variables.SwipeDirection.RIGHT):
+  if (direction == Variables.SwipeDirection.RIGHT):
     Variables.currentScene = Variables.CurrentSceneIs.CLOCK
     $Clock.visible = true
     $Stopwatch.visible = false
