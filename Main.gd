@@ -1,5 +1,7 @@
 extends Node
 
+signal sceneChange(scene)
+
 # Mode scenes
 #var AlarmScene : PackedScene = load("res://Alarm.tscn")
 var ClockScene : PackedScene = load("res://Clock.tscn")
@@ -13,7 +15,7 @@ var screenDimentions := Vector2(0,0);
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-  Variables.currentScene = Variables.defaultScene
+  #Variables.currentScene = Variables.defaultScene
   screenDimentions = self.rect_size
 
   var clockScene = ClockScene.instance()
@@ -26,8 +28,8 @@ func _ready():
 #  var ModeList : PackedScene = load("res://ModeList.tscn")
 #  var modeList = ModeList.instance()
 
-  var test = $"/root/System"
-  test.connect("swipeDirection", self, "directionChange")
+  var sceneChange = $"/root/System"
+  sceneChange.connect("swipeDirection", self, "directionChange")
 
   if (!isSceneLoaded):
     #match Variables.currentScene:
@@ -80,24 +82,22 @@ func _process(_delta):
 
 func directionChange(direction):
   if (direction == Variables.SwipeDirection.UP):
-    print("up")
     pass
   if (direction == Variables.SwipeDirection.DOWN):
-    print("down")
     pass
   if (direction == Variables.SwipeDirection.LEFT):
     Variables.currentScene = Variables.CurrentSceneIs.STOPWATCH
     $Clock.visible = false
     $Stopwatch.visible = true
-    Variables.switchScene = true
-    print("left")
+    emit_signal("sceneChange", Variables.CurrentSceneIs.STOPWATCH)
+    #Variables.switchScene = true
     pass
   if (direction == Variables.SwipeDirection.RIGHT):
     Variables.currentScene = Variables.CurrentSceneIs.CLOCK
     $Clock.visible = true
     $Stopwatch.visible = false
-    Variables.switchScene = true
-    print("right")
+    emit_signal("sceneChange", Variables.CurrentSceneIs.CLOCK)
+    #Variables.switchScene = true
     pass
   Variables.swipeDirection = null
   pass

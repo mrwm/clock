@@ -13,6 +13,9 @@ var menuHide = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 
+  var sceneChange = $"/root/Main"
+  sceneChange.connect("sceneChange", self, "update_btn")
+
   # Settings button
   settingsBtn.name = "SettingsBtn";
   settingsBtn.text = "settings";
@@ -30,7 +33,7 @@ func _ready():
   paddingLabel1.rect_size.y = 100
 
   # Toggle buttons
-  update_btn(Variables.currentScene)
+  update_btn(Variables.defaultScene)
 
   # Padding label
   var paddingLabel2 := Label.new();
@@ -82,30 +85,31 @@ func _process(delta):
       if self.rect_position.y > menuPostion.y + menuHide:
         self.rect_position.y = menuPostion.y + menuHide
     settingsBtn.pressed = false
-  if (Variables.switchScene):
-    update_btn(Variables.currentScene)
-    Variables.switchScene = false
 
-
+var oldScene = 1
 func update_btn(scene):
   """Update the toggle buttons for the information specified with 'scene'"""
 
-  if(Variables.switchScene):
+  if(toggle1 != null):
     toggle1.queue_free()
     toggle2.queue_free()
     toggle3.queue_free()
+  #  Variables.switchScene = false
+
   if (scene == Variables.CurrentSceneIs.ALARM):
     print("menu: alarm")
   elif (scene == Variables.CurrentSceneIs.CLOCK):
     toggle1 = CheckButton.new()
     toggle1.name = "SecondToggle";
     toggle1.text = "show seconds";
+    toggle1.pressed = Variables.showSeconds;
     toggle2 = CheckButton.new()
     toggle2.name = "Use24Toggle";
     toggle2.text = "use 24HR clock";
+    toggle2.pressed = Variables.use24hour;
     toggle3 = Button.new()
     toggle3.name = "pad";
-    toggle3.text = "pad";
+    toggle3.text = " ";
     toggle3.modulate.a = 0;
     toggle3.disabled = true;
   elif (scene == Variables.CurrentSceneIs.TIMER):
@@ -176,6 +180,8 @@ func update_btn(scene):
   menuList.move_child(toggle1, 2);
   menuList.move_child(toggle2, 3);
   menuList.move_child(toggle3, 4);
+  
+  print("")
   pass
 
 ###########
